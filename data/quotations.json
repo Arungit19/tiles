@@ -1,0 +1,228 @@
+[
+  {
+    "id": "1779133905128",
+    "quotationNum": "TQ-2026-7224",
+    "date": "19 May 2026",
+    "clientInfo": {
+      "name": "ABC Construction",
+      "address": "Moradabad",
+      "phone": "7824888",
+      "email": "Moradabad"
+    },
+    "items": [
+      {
+        "id": 1779133877224.16,
+        "photo": null,
+        "photoUrl": null,
+        "companyName": "Kajariaaaa tiles 2",
+        "tileSize": "24*24",
+        "ratePerSqft": "12",
+        "qtyPerBox": "20",
+        "perBoxRate": "240.00",
+        "numBoxes": "1",
+        "totalAmount": "240.00"
+      }
+    ],
+    "subtotal": 240,
+    "taxRate": 18,
+    "tax": 43.2,
+    "grandTotal": "283.20",
+    "createdAt": "2026-05-18T19:51:45.128Z",
+    "createdBy": "admin"
+  },
+  {
+    "id": "1779166224089",
+    "quotationNum": "TQ-2026-3179",
+    "date": "19 May 2026",
+    "clientInfo": {
+      "name": "Kumar ",
+      "address": "Moradabad",
+      "phone": "9457887555",
+      "email": "hariwdar"
+    },
+    "items": [
+      {
+        "id": 1779166093179.7192,
+        "photo": {},
+        "photoUrl": "blob:http://localhost:3000/50ba5e9e-6581-4a51-abcc-8590bc7b2595",
+        "companyName": "Kajariaaaa ",
+        "tileSize": "24*24",
+        "ratePerSqft": "12",
+        "qtyPerBox": "20",
+        "perBoxRate": "240.00",
+        "numBoxes": "1",
+        "totalAmount": "240.00"
+      },
+      {
+        "id": 1779166139353.1785,
+        "photo": null,
+        "photoUrl": null,
+        "companyName": "",
+        "tileSize": "24*24",
+        "ratePerSqft": "25",
+        "qtyPerBox": "44",
+        "perBoxRate": "1100.00",
+        "numBoxes": "25",
+        "totalAmount": "27500.00"
+      }
+    ],
+    "subtotal": 27740,
+    "taxRate": 18,
+    "tax": 4993.2,
+    "grandTotal": "32,733.20",
+    "createdAt": "2026-05-19T04:50:24.089Z",
+    "createdBy": "admin"
+  },
+  {
+    "id": "1779169981437",
+    "quotationNum": "TQ-2026-8258",
+    "date": "19 May 2026",
+    "validUntil": "26 May 2026",
+    "clientInfo": {
+      "name": "soniya&smrith",
+      "address": "Moeadabad",
+      "phone": "7894563210",
+      "email": "ss@gmail.com"
+    },
+    "items": [
+      {
+        "id": 1779169808258.5237,
+        "photo": {},
+        "photoUrl": "blob:http://localhost:3000/589cce63-1164-411c-9887-7f3a2505d091",
+        "companyName": "Kajariaaaa tiles 2",
+        "tileSize": "24*24",
+        "ratePerSqft": "12",
+        "qtyPerBox": "20",
+        "perBoxRate": "240.00",
+        "numBoxes": "40",
+        "totalAmount": "9600.00"
+      },
+      {
+        "id": 1779169931079.496,
+        "photo": null,
+        "photoUrl": null,
+        "companyName": "kajariaa tiles 3",
+        "tileSize": "24*24",
+        "ratePerSqft": "10",
+        "qtyPerBox": "20",
+        "perBoxRate": "200.00",
+        "numBoxes": "82",
+        "totalAmount": "16400.00"
+      }
+    ],
+    "subtotal": 26000,
+    "taxRate": 18,
+    "tax": 4680,
+    "grandTotal": "30,680.00",
+    "createdAt": "2026-05-19T05:53:01.437Z",
+    "createdBy": "Sumit Gupta"
+  },
+  {
+    "id": "1779174420337",
+    "quotationNum": "TQ-2026-7810",
+    "date": "19 May 2026",
+    "validUntil": "26 May 2026",
+    "clientInfo": {
+      "name": "singh Construction",
+      "address": "Moradabad",
+      "phone": "9321478596",
+      "email": "Moradabad"
+    },
+    "items": [
+      {
+        "id": 1779174357810.971,
+        "photo": {},
+        "photoUrl": "blob:http://localhost:3000/aaf5503c-6600-44db-b08c-01a595bdf2eb",
+        "companyName": "Kajariaaaa tiles 2",
+        "tileSize": "24*24",
+        "ratePerSqft": "12",
+        "qtyPerBox": "20",
+        "perBoxRate": "240.00",
+        "numBoxes": "1",
+        "totalAmount": "240.00"
+      },
+      {
+        "id": 1779174412000.4197,
+        "photo": null,
+        "photoUrl": null,
+        "companyName": "",
+        "tileSize": "",
+        "ratePerSqft": "",
+        "qtyPerBox": "",
+        "perBoxRate": "",
+        "numBoxes": "",
+        "totalAmount": ""
+      }
+    ],
+    "subtotal": 240,
+    "taxRate": 18,
+    "tax": 43.2,
+    "grandTotal": "283.20",
+    "createdAt": "2026-05-19T07:07:00.337Z",
+    "createdBy": "Sumit Gupta"
+  },
+  {
+    "id": "1779174972334",
+    "quotationNum": "TQ-2026-5930",
+    "date": "19 May 2026",
+    "validUntil": "26 May 2026",
+    "clientInfo": {
+      "name": "ABC Construction",
+      "address": "Moradabad",
+      "phone": "9478596123",
+      "email": "Moradabad"
+    },
+    "items": [
+      {
+        "id": 1779174955930.2969,
+        "photo": null,
+        "photoUrl": null,
+        "companyName": "Kajariaaaa tiles 2",
+        "tileSize": "24*24",
+        "ratePerSqft": "12",
+        "qtyPerBox": "20",
+        "perBoxRate": "240.00",
+        "numBoxes": "1",
+        "totalAmount": "240.00"
+      }
+    ],
+    "subtotal": 240,
+    "taxRate": 18,
+    "tax": 43.2,
+    "grandTotal": "283.20",
+    "createdAt": "2026-05-19T07:16:12.334Z",
+    "createdBy": "Sumit Gupta"
+  },
+  {
+    "id": "1779176704829",
+    "quotationNum": "TQ-2026-0537",
+    "date": "19 May 2026",
+    "validUntil": "26 May 2026",
+    "clientInfo": {
+      "name": "xyz Construction",
+      "address": "Moradabad",
+      "phone": "7824888",
+      "email": "sumit gupta"
+    },
+    "items": [
+      {
+        "id": 1779176620537.3508,
+        "photo": null,
+        "photoUrl": null,
+        "companyName": "Kajariaaaa tiles 2",
+        "tileSize": "24*24",
+        "ratePerSqft": "12",
+        "qtyPerBox": "20",
+        "perBoxRate": "240.00",
+        "numBoxes": "1",
+        "totalAmount": "240.00"
+      }
+    ],
+    "subtotal": 240,
+    "taxRate": 18,
+    "tax": 43.2,
+    "grandTotal": "283.20",
+    "createdAt": "2026-05-19T07:45:04.829Z",
+    "createdBy": "Sumit Gupta"
+  }
+]
