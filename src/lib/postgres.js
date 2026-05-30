@@ -103,7 +103,9 @@ await pool.query(`
 await pool.query(`
   ALTER TABLE quotations
     ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN DEFAULT false,
-    ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMP WITH TIME ZONE;
+    ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMP WITH TIME ZONE,
+    ADD COLUMN IF NOT EXISTS tax_rate NUMERIC(5,2) DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS tax_amount NUMERIC(18,2) DEFAULT 0;
 `);
 
 await pool.query(`

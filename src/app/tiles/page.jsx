@@ -424,10 +424,10 @@ function QuotationHistoryPage({ onBack, quotationList, onQuotationDeleted, onEdi
       const W = 210, H = 297, ML = 12, MR = 12;
       const clientInfo = q.clientInfo || {};
       const items = q.items || [];
-      const taxRate = q.taxRate || 18;
+      const taxRate = 0;
       const subtotal = q.subtotal || items.reduce((s, it) => s + (parseFloat(it.totalAmount) || 0), 0);
-      const tax = q.tax || subtotal * taxRate / 100;
-      const grandTotal = subtotal + tax;
+      const tax = 0;
+      const grandTotal = subtotal;
 
       doc.setFillColor(201, 149, 107);
       doc.triangle(W, 0, W - 45, 0, W, 45, "F");
@@ -512,7 +512,6 @@ function QuotationHistoryPage({ onBack, quotationList, onQuotationDeleted, onEdi
         doc.text(label, totX+3, y+4.8); doc.text(value, W-MR-2, y+4.8, { align: "right" }); y += totRowH;
       };
       totRow("Subtotal", `Rs.${fmt(subtotal)}`);
-      totRow(`GST (${taxRate}%)`, `Rs.${fmt(tax)}`);
       totRow("GRAND TOTAL", `Rs.${fmt(grandTotal)}`, true, true);
 
       y = H - 28;
@@ -848,7 +847,6 @@ function QuotationHistoryPage({ onBack, quotationList, onQuotationDeleted, onEdi
                 <div style={{ width: sm ? "100%" : 320, borderRadius: 12, overflow: "hidden", border: "1px solid #E8D5C0" }}>
                   {[
                     ["Subtotal", `Rs.${fmt(selectedQ.subtotal || 0)}`],
-                    [`GST (${selectedQ.taxRate || 18}%)`, `Rs.${fmt(selectedQ.tax || 0)}`],
                   ].map(([l, v]) => (
                     <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "10px 16px", background: "#FBF0E6", borderBottom: "1px solid #E8D5C0" }}>
                       <span style={{ color: "#4A3728", fontSize: 13 }}>{l}</span>
@@ -893,8 +891,8 @@ function QuotationForm({ user, onLogout }) {
     ? new Date(validUntilDate + "T00:00:00").toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" })
     : "—";
   const [showPreview, setShowPreview] = useState(false);
-  const [taxRate, setTaxRate] = useState(18);
-  const [taxInput, setTaxInput] = useState("18");
+  const [taxRate, setTaxRate] = useState(0);
+  const [taxInput, setTaxInput] = useState("0");
   const [pdfLoading, setPdfLoading] = useState(false);
   const [showAdminDropdown, setShowAdminDropdown] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -1164,7 +1162,6 @@ function QuotationForm({ user, onLogout }) {
       };
 
       totRow("Subtotal", `Rs.${fmt(subtotal)}`);
-      totRow(`GST (${taxRate}%)`, `Rs.${fmt(tax)}`);
       totRow("GRAND TOTAL", `Rs.${fmt(grandTotal)}`, true, true);
 
       y = H - 28;
@@ -1210,9 +1207,8 @@ function QuotationForm({ user, onLogout }) {
     setItems(editItems);
     if (q.date) setDateValue(q.date.slice(0, 10));
     if (q.validUntil) setValidUntilDate(q.validUntil.slice(0, 10));
-    const rate = parseFloat(q.taxRate) || 18;
-    setTaxRate(rate);
-    setTaxInput(String(rate));
+    setTaxRate(0);
+    setTaxInput("0");
     setShowHistory(false);
     setShowPreview(false);
   };
@@ -1311,7 +1307,7 @@ function QuotationForm({ user, onLogout }) {
 
             <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 14 }}>
               <div style={{ width: sm ? "100%" : 300, borderRadius: 10, overflow: "hidden", border: "1px solid #E8D5C0" }}>
-                {[["Subtotal", `Rs.${fmt(subtotal)}`], [`GST (${taxRate}%)`, `Rs.${fmt(tax)}`]].map(([l, v]) => (
+                {[["Subtotal", `Rs.${fmt(subtotal)}`]].map(([l, v]) => (
                   <div key={l} style={{ display: "flex", justifyContent: "space-between", padding: "8px 14px", background: "#FBF0E6", borderBottom: "1px solid #E8D5C0" }}>
                     <span style={{ color: "#4A3728", fontSize: 13 }}>{l}</span>
                     <span style={{ color: "#2C1810", fontWeight: 600, fontSize: 13 }}>{v}</span>
@@ -1526,21 +1522,8 @@ function QuotationForm({ user, onLogout }) {
           border: "1.5px solid #E8D5C0"
         }}>
           <h3 style={{ color: "#4A3728", margin: "0 0 12px", fontSize: 14, fontWeight: 700 }}>Summary</h3>
-          <div style={{ marginBottom: 14, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "#4A3728", whiteSpace: "nowrap" }}>GST Rate (%):</label>
-            <input
-              type="number" min="0" max="100" value={taxInput}
-              onChange={e => handleTaxChange(e.target.value)}
-              style={{
-                width: 80, padding: "7px 10px", borderRadius: 8, border: "1.5px solid #D5B99A",
-                fontSize: 14, color: "#2C1810", fontWeight: 600, textAlign: "center"
-              }}
-            />
-            <span style={{ fontSize: 12, color: "#8B7355" }}>GST: Rs.{fmt(tax)}</span>
-          </div>
-
           <div style={{ display: "flex", gap: sm ? 8 : 12, flexWrap: sm ? "nowrap" : "wrap" }}>
-            {[["Subtotal", `Rs.${fmt(subtotal)}`], [`GST (${taxRate}%)`, `Rs.${fmt(tax)}`], ["Grand Total", `Rs.${fmt(grandTotal)}`]].map(([l, v], i) => (
+            {[["Subtotal", `Rs.${fmt(subtotal)}`], ["Grand Total", `Rs.${fmt(grandTotal)}`]].map(([l, v], i) => (
               <div key={l} style={{
                 flex: 1, padding: sm ? 10 : 14, borderRadius: 12, textAlign: "center",
                 background: i === 2 ? "#8B5E3C" : "#FBF5EF",
