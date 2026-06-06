@@ -37,11 +37,12 @@ async function saveQuotationToBackend(quotationData) {
       body: JSON.stringify(quotationData),
     });
 
+    const result = await response.json().catch(() => ({}));
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(result.error || `HTTP error! status: ${response.status}`);
     }
 
-    const result = await response.json();
     return result;
   } catch (error) {
     console.error('Error saving quotation:', error);
@@ -471,13 +472,14 @@ function QuotationHistoryPage({ onBack, quotationList, onQuotationDeleted, onEdi
       doc.text("ITEMIZED QUOTATION DETAILS:", ML, y); y += 5;
 
       const usable = W - ML - MR;
-      const cols = { no: { x: ML, w: 6 }, photo: { x: ML+6, w: 14 }, company: { x: ML+20, w: 36 }, size: { x: ML+56, w: 24 }, rate: { x: ML+80, w: 20 }, qty: { x: ML+100, w: 18 }, total: { x: ML+118, w: 30 } };
+      const cols = { no: { x: ML, w: 6 }, photo: { x: ML+6, w: 14 }, company: { x: ML+20, w: 36 }, size: { x: ML+56, w: 24 }, rate: { x: ML+80, w: 20 }, qty: { x: ML+100, w: 18 }, boxes: { x: ML+118, w: 16 }, total: { x: ML+134, w: 36 } };
       const headerH = 7;
       doc.setFillColor(139, 94, 60); doc.rect(ML, y, usable, headerH, "F");
       doc.setFontSize(6.5); doc.setFont("helvetica", "bold"); doc.setTextColor(255, 255, 255);
       doc.text("#", cols.no.x+1, y+4.5); doc.text("Photo", cols.photo.x+1, y+4.5);
       doc.text("Company/Item", cols.company.x+1, y+4.5); doc.text("Tile Size", cols.size.x+1, y+4.5);
       doc.text("Rate/sqft", cols.rate.x+1, y+4.5); doc.text("Qty/Box", cols.qty.x+1, y+4.5);
+      doc.text("Boxes", cols.boxes.x+1, y+4.5);
       doc.text("Total", cols.total.x+1, y+4.5); y += headerH;
 
       for (let i = 0; i < items.length; i++) {
@@ -497,6 +499,7 @@ function QuotationHistoryPage({ onBack, quotationList, onQuotationDeleted, onEdi
         doc.text(it.tileSize || "-", cols.size.x+1, y+6);
         doc.text(it.ratePerSqft ? `Rs.${it.ratePerSqft}` : "-", cols.rate.x+1, y+6);
         doc.text(it.qtyPerBox || "-", cols.qty.x+1, y+6);
+        doc.text(it.numBoxes || "-", cols.boxes.x+1, y+6);
         doc.setFont("helvetica", "bold"); doc.setTextColor(139, 94, 60);
         doc.text(it.totalAmount ? `Rs.${parseFloat(it.totalAmount).toLocaleString("en-IN")}` : "-", cols.total.x+1, y+6);
         doc.setDrawColor(220, 190, 160); doc.setLineWidth(0.15); doc.line(ML, y+rowH, W-MR, y+rowH);
@@ -518,7 +521,8 @@ function QuotationHistoryPage({ onBack, quotationList, onQuotationDeleted, onEdi
       doc.setDrawColor(201, 149, 107); doc.setLineWidth(0.3); doc.line(ML, y, W-MR, y); y += 5;
       doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(139, 94, 60);
       doc.text("Note: This is a computer-generated quotation.", ML, y); y += 4;
-      doc.setTextColor(74, 55, 40); doc.text("Prices valid for 7 days. Taxes as applicable.", ML, y); y += 6;
+      doc.setTextColor(74, 55, 40); doc.text("Prices valid for 7 days. Taxes as applicable.", ML, y); y += 4;
+      doc.text("Cartage and labor charges are extra.", ML, y); y += 6;
       doc.setFont("helvetica", "bold"); doc.setTextColor(44, 24, 16);
       doc.text(`Prepared By: ${q.createdBy || "—"}`, ML, y);
       doc.text(`Authorized: ${COMPANY_INFO.name}`, W-MR, y, { align: "right" });
@@ -862,7 +866,7 @@ function QuotationHistoryPage({ onBack, quotationList, onQuotationDeleted, onEdi
 
               {/* Footer Note */}
               <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid #E8D5C0", display: "flex", justifyContent: "space-between", fontSize: 12, color: "#8B7355" }}>
-                <div>Note: Computer-generated quotation. Prices valid for 7 days.</div>
+                <div>Note: Computer-generated quotation. Prices valid for 7 days. Cartage and labor charges are extra.</div>
                 <div style={{ fontWeight: 700, color: "#2C1810" }}>Authorized: {COMPANY_INFO.name}</div>
               </div>
             </div>
@@ -931,10 +935,15 @@ function QuotationForm({ user, onLogout }) {
   };
 
   const saveQuotationToHistory = async () => {
+    const saveClientInfo = {
+      ...clientInfo,
+      name: clientInfo.name?.trim() || "Client Name",
+    };
+
     const newQuotation = {
       quotationNum,
       date: dateValue,
-      clientInfo,
+      clientInfo: saveClientInfo,
       items,
       subtotal,
       taxRate,
@@ -1073,7 +1082,8 @@ function QuotationForm({ user, onLogout }) {
         size:    { x: ML + 56,  w: 24 },
         rate:    { x: ML + 80,  w: 20 },
         qty:     { x: ML + 100, w: 18 },
-        total:   { x: ML + 118, w: 30 },
+        boxes:   { x: ML + 118, w: 16 },
+        total:   { x: ML + 134, w: 36 },
       };
 
       const headerH = 7;
@@ -1089,6 +1099,7 @@ function QuotationForm({ user, onLogout }) {
       doc.text("Tile Size",     cols.size.x + 1,    y + 4.5);
       doc.text("Rate/sqft",     cols.rate.x + 1,    y + 4.5);
       doc.text("Qty/Box",       cols.qty.x + 1,     y + 4.5);
+      doc.text("Boxes",         cols.boxes.x + 1,   y + 4.5);
       doc.text("Total",         cols.total.x + 1,   y + 4.5);
       y += headerH;
 
@@ -1125,6 +1136,7 @@ function QuotationForm({ user, onLogout }) {
         doc.text(it.tileSize || "-", cols.size.x + 1, y + 6);
         doc.text(it.ratePerSqft ? `Rs.${it.ratePerSqft}` : "-", cols.rate.x + 1, y + 6);
         doc.text(it.qtyPerBox || "-", cols.qty.x + 1, y + 6);
+        doc.text(it.numBoxes || "-", cols.boxes.x + 1, y + 6);
 
         const totalVal = it.totalAmount ? `Rs.${parseFloat(it.totalAmount).toLocaleString("en-IN")}` : "-";
         doc.setFont("helvetica", "bold");
@@ -1177,6 +1189,8 @@ function QuotationForm({ user, onLogout }) {
       y += 4;
       doc.setTextColor(74, 55, 40);
       doc.text("Prices valid for 7 days. Taxes as applicable.", ML, y);
+      y += 4;
+      doc.text("Cartage and labor charges are extra.", ML, y);
 
       doc.save(`Tile_Quotation_${quotationNum}.pdf`);
       
@@ -1277,10 +1291,10 @@ function QuotationForm({ user, onLogout }) {
 
             <div style={{ fontWeight: 700, fontSize: sm ? 11 : 13, color: "#2C1810", marginBottom: 8 }}>ITEMIZED QUOTATION DETAILS:</div>
             <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-              <table style={{ width: "100%", minWidth: 480, borderCollapse: "collapse", fontSize: sm ? 11 : 12 }}>
+              <table style={{ width: "100%", minWidth: 540, borderCollapse: "collapse", fontSize: sm ? 11 : 12 }}>
                 <thead>
                   <tr style={{ background: "#8B5E3C", color: "white" }}>
-                    {["#", "Photo", "Company / Item", "Tile Size", "Rate/sqft", "Qty/Box", "Total (Rs.)"].map(h => (
+                    {["#", "Photo", "Company / Item", "Tile Size", "Rate/sqft", "Qty/Box", "Boxes", "Total (Rs.)"].map(h => (
                       <th key={h} style={{ padding: sm ? "6px 3px" : "8px 4px", textAlign: "left", fontSize: sm ? 10 : 11, whiteSpace: "nowrap" }}>{h}</th>
                     ))}
                   </tr>
@@ -1296,6 +1310,7 @@ function QuotationForm({ user, onLogout }) {
                       <td style={{ padding: sm ? "5px 3px" : "6px 4px", color: "#4A3728", whiteSpace: "nowrap" }}>{it.tileSize || "—"}</td>
                       <td style={{ padding: sm ? "5px 3px" : "6px 4px", color: "#4A3728", whiteSpace: "nowrap" }}>{it.ratePerSqft ? `Rs.${it.ratePerSqft}` : "—"}</td>
                       <td style={{ padding: sm ? "5px 3px" : "6px 4px", color: "#4A3728" }}>{it.qtyPerBox || "—"}</td>
+                      <td style={{ padding: sm ? "5px 3px" : "6px 4px", color: "#4A3728" }}>{it.numBoxes || "-"}</td>
                       <td style={{ padding: sm ? "5px 3px" : "6px 4px", fontWeight: 700, color: "#8B5E3C", whiteSpace: "nowrap" }}>
                         {it.totalAmount ? `Rs.${parseFloat(it.totalAmount).toLocaleString("en-IN")}` : "—"}
                       </td>
@@ -1322,7 +1337,7 @@ function QuotationForm({ user, onLogout }) {
 
             <hr style={{ borderColor: "#C9956B", margin: "16px 0 10px" }} />
             <div style={{ fontSize: 11, color: "#8B7355" }}>
-              Note: This is a computer-generated quotation. Prices valid for 7 days. Taxes as applicable.
+              Note: This is a computer-generated quotation. Prices valid for 7 days. Taxes as applicable. Cartage and labor charges are extra.
             </div>
           </div>
         </div>
