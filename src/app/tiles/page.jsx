@@ -1337,7 +1337,11 @@ function QuotationForm({ user, onLogout }) {
 
             <hr style={{ borderColor: "#C9956B", margin: "16px 0 10px" }} />
             <div style={{ fontSize: 11, color: "#8B7355" }}>
-              Note: This is a computer-generated quotation. Prices valid for 7 days. Taxes as applicable. Cartage and labor charges are extra.
+              Note: This is a computer-generated quotation. Prices valid for 7 days. 
+              {/* Taxes as applicable. Cartage and labor charges are extra. */}
+            </div>
+            <div style={{ fontSize: 11, color: "#8B7355" }}>
+              Taxes as applicable. Cartage and labor charges are extra.
             </div>
           </div>
         </div>
